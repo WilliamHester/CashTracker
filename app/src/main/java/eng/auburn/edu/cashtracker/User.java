@@ -51,9 +51,21 @@ public class User extends RealmObject {
         return budgets;
     }
 
+    public void setAccounts(RealmList<Account> accounts) {
+        this.accounts = accounts;
+    }
+
+    public void setBudgets(RealmList<Budget> budgets) {
+        this.budgets = budgets;
+    }
+
+    public void setGoals(RealmList<Goal> goals) {
+        this.goals = goals;
+    }
+
     public static int getAccountsTotal(User u) {
         int balance = 0;
-        for (Account a : u.accounts) {
+        for (Account a : u.getAccounts()) {
             balance += Account.getBalance(a);
         }
         return balance;

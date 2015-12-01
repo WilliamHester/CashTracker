@@ -10,13 +10,17 @@ public class Account extends RealmObject {
 
     private String name;
     private double interestRate;
-    private int interestRateFrequency;
+    private String interestRateFrequency;
     private int startingBalance;
 
     private RealmList<Transaction> transactions;
 
     public RealmList<Transaction> getTransactions() {
         return transactions;
+    }
+
+    public void setTransactions(RealmList<Transaction> transactions) {
+        this.transactions = transactions;
     }
 
     public String getName() {
@@ -43,11 +47,11 @@ public class Account extends RealmObject {
         this.interestRate = interestRate;
     }
 
-    public int getInterestRateFrequency() {
+    public String getInterestRateFrequency() {
         return interestRateFrequency;
     }
 
-    public void setInterestRateFrequency(int interestRateFrequency) {
+    public void setInterestRateFrequency(String interestRateFrequency) {
         this.interestRateFrequency = interestRateFrequency;
     }
 

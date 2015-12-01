@@ -1,9 +1,14 @@
 package eng.auburn.edu.cashtracker;
 
+import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
@@ -19,6 +24,8 @@ import butterknife.ButterKnife;
  * Created by william on 11/30/15.
  */
 public class AccountsFragment extends Fragment {
+
+    private static final int CREATE_ACCOUNT = 10;
 
     private final ArrayList<Account> mAccounts = new ArrayList<>();
 
@@ -40,6 +47,7 @@ public class AccountsFragment extends Fragment {
 
         if (getActivity() != null && getActivity().getActionBar() != null) {
             getActivity().getActionBar().setTitle(R.string.accounts);
+            setHasOptionsMenu(true);
         }
 
         if (mAccounts.size() == 0) {
@@ -66,6 +74,43 @@ public class AccountsFragment extends Fragment {
 
         User u = UserManager.getInstance().getUser();
         mAccountsTotal.setText(Utils.getDollarString(User.getAccountsTotal(u)));
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == CREATE_ACCOUNT) {
+            if (resultCode == Activity.RESULT_OK) {
+                User u = UserManager.getInstance().getUser();
+                mAccounts.clear();
+                mAccounts.addAll(u.getAccounts());
+                mAdapter.notifyDataSetChanged();
+                if (mAccountsTotal != null) {
+                    mAccountsTotal.setText(Utils.getDollarString(User.getAccountsTotal(u)));
+                }
+            }
+            return;
+        }
+        super.onActivityResult(requestCode, resultCode, data);
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        super.onCreateOptionsMenu(menu, inflater);
+
+        inflater.inflate(R.menu.menu_create_new, menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == R.id.action_create_new) {
+            Intent i = new Intent(getActivity(), ContainerActivity.class);
+            Bundle args = new Bundle();
+            args.putString("action", ContainerActivity.CREATE_ACCOUNT);
+            i.putExtras(args);
+            startActivityForResult(i, CREATE_ACCOUNT);
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     @Override

@@ -40,7 +40,7 @@ public class LoginFragment extends Fragment {
         super.onCreate(savedInstanceState);
 
         if (mRealm == null) {
-            mRealm = Realm.getDefaultInstance();
+            mRealm = Realm.getInstance(getActivity());
         }
     }
 

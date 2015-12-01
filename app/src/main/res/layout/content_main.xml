@@ -7,12 +7,14 @@
     android:layout_height="match_parent"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:context="eng.auburn.edu.cashtracker.MainActivity"
-    tools:showIn="@layout/activity_main">
+    tools:showIn="@layout/activity_main"
+    android:id="@+id/drawer_layout">
 
-    <FrameLayout android:id="@+id/nav_container"
+    <android.support.design.widget.NavigationView android:id="@+id/navigation"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
         android:layout_gravity="start"
-        android:layout_width="280dp"
-        android:layout_height="match_parent"/>
+        app:menu="@menu/navigation_items" />
 
     <FrameLayout android:id="@+id/container"
         android:layout_width="match_parent"

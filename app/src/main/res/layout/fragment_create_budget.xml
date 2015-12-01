@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/budget_name"/>
+
+    <EditText android:id="@+id/budget_name"
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:singleLine="true"
+        android:inputType="textCapWords"
+        android:hint="@string/budget_name_hint"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/goal_amount"/>
+
+    <EditText android:id="@+id/budget_goal"
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:singleLine="true"
+        android:inputType="numberDecimal"
+        android:hint="@string/goal_amount_hint"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/category"/>
+
+    <Spinner android:id="@+id/category_spinner"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
+
+    <Button android:id="@+id/create"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/create"/>
+
+</LinearLayout>

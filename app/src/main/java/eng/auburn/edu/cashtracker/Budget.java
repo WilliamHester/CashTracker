@@ -14,6 +14,7 @@ public class Budget extends RealmObject {
     private int goal;
     private String name;
     private String category;
+
     private RealmList<Transaction> transacitons;
 
     public int getCurrentAmount() {
@@ -52,9 +53,13 @@ public class Budget extends RealmObject {
         return transacitons;
     }
 
+    public void setTransacitons(RealmList<Transaction> transacitons) {
+        this.transacitons = transacitons;
+    }
+
     public static int getCurrentAmount(Budget b) {
         int balance = b.goal;
-        for (Transaction t : b.transacitons) {
+        for (Transaction t : b.getTransacitons()) {
             balance -= t.getAmount();
         }
         return balance;

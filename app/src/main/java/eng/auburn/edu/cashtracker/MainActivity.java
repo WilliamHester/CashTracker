@@ -1,19 +1,19 @@
 package eng.auburn.edu.cashtracker;
 
 import android.os.Bundle;
+import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
+import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.view.Menu;
 import android.view.MenuItem;
 
-public class MainActivity extends AppCompatActivity implements NavigationDrawerFragment.NavigationInterface {
+public class MainActivity extends AppCompatActivity {
 
     private static final String ACCOUNTS_FRAGMENT = "accounts";
     private static final String BUDGETS_FRAGMENT = "budgets";
     private static final String GOALS_FRAGMENT = "goals";
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,55 +29,59 @@ public class MainActivity extends AppCompatActivity implements NavigationDrawerF
                     .commit();
         }
 
-        Fragment nav = getSupportFragmentManager().findFragmentById(R.id.nav_container);
-        if (nav == null) {
-            getSupportFragmentManager().beginTransaction()
-                    .add(R.id.nav_container, NavigationDrawerFragment.newInstance(), "nav")
-                    .commit();
-        }
-    }
+        final DrawerLayout drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_main, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        }
-
-        return super.onOptionsItemSelected(item);
-    }
-
-    @Override
-    public void onAccountsClicked() {
-        FragmentManager fm = getSupportFragmentManager();
-        Fragment f = fm.findFragmentByTag(ACCOUNTS_FRAGMENT);
-        if (f == null) {
-            f = AccountsFragment.newInstance();
-        }
-        fm.beginTransaction()
-                .replace(R.id.container, f, ACCOUNTS_FRAGMENT)
-                .commit();
-    }
-
-    @Override
-    public void onBudgetsClicked() {
-
-    }
-
-    @Override
-    public void onGoalsClicked() {
-
+        NavigationView navigationView = (NavigationView) findViewById(R.id.navigation);
+        navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(MenuItem item) {
+                FragmentManager fm = getSupportFragmentManager();
+                Fragment f = fm.findFragmentById(R.id.container);
+                String tag = null;
+                switch (item.getItemId()) {
+                    case R.id.accounts:
+                        if (f instanceof AccountsFragment) {
+                            drawerLayout.closeDrawers();
+                            return false;
+                        }
+                        f = fm.findFragmentByTag(ACCOUNTS_FRAGMENT);
+                        tag = ACCOUNTS_FRAGMENT;
+                        if (f == null) {
+                            f = AccountsFragment.newInstance();
+                        }
+                        break;
+                    case R.id.budgets:
+                        if (f instanceof BudgetsFragment) {
+                            drawerLayout.closeDrawers();
+                            return false;
+                        }
+                        f = fm.findFragmentByTag(BUDGETS_FRAGMENT);
+                        tag = BUDGETS_FRAGMENT;
+                        if (f == null) {
+                            f = BudgetsFragment.newInstance();
+                        }
+                        break;
+                    case R.id.goals:
+                        if (f instanceof GoalsFragment) {
+                            drawerLayout.closeDrawers();
+                            return false;
+                        }
+                        f = fm.findFragmentByTag(GOALS_FRAGMENT);
+                        tag = GOALS_FRAGMENT;
+                        if (f == null) {
+                            f = GoalsFragment.newInstance();
+                        }
+                        break;
+                    case R.id.action_settings:
+                        break;
+                }
+                fm.beginTransaction()
+                        .replace(R.id.container, f, tag)
+                        .commit();
+                drawerLayout.closeDrawers();
+                item.setChecked(true);
+                return false;
+            }
+        });
     }
 }

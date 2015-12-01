@@ -25,8 +25,8 @@ public class Goal extends RealmObject {
         return account;
     }
 
-    public void getAccount(Account account) {
-        this.account = this.account;
+    public void setAccount(Account account) {
+        this.account = account;
     }
 
     public String getName() {

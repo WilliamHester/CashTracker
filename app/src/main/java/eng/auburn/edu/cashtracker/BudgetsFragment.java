@@ -1,9 +1,14 @@
 package eng.auburn.edu.cashtracker;
 
+import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
@@ -19,6 +24,8 @@ import butterknife.ButterKnife;
  * Created by william on 11/30/15.
  */
 public class BudgetsFragment extends Fragment {
+
+    private static final int CREATE_BUDGET = 11;
 
     private final ArrayList<Budget> mBudgets = new ArrayList<>();
     private BudgetsAdapter mBudgetsAdapter;
@@ -38,6 +45,7 @@ public class BudgetsFragment extends Fragment {
 
         if (getActivity() != null && getActivity().getActionBar() != null) {
             getActivity().getActionBar().setTitle(R.string.budgets);
+            setHasOptionsMenu(true);
         }
         if (mBudgets.size() == 0) {
             mBudgets.addAll(UserManager.getInstance().getUser().getBudgets());
@@ -66,6 +74,40 @@ public class BudgetsFragment extends Fragment {
     public void onDestroyView() {
         super.onDestroyView();
         ButterKnife.unbind(this);
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == CREATE_BUDGET) {
+            if (resultCode == Activity.RESULT_OK) {
+                User u = UserManager.getInstance().getUser();
+                mBudgets.clear();
+                mBudgets.addAll(u.getBudgets());
+                mBudgetsAdapter.notifyDataSetChanged();
+            }
+            return;
+        }
+        super.onActivityResult(requestCode, resultCode, data);
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        super.onCreateOptionsMenu(menu, inflater);
+
+        inflater.inflate(R.menu.menu_create_new, menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == R.id.action_create_new) {
+            Intent i = new Intent(getActivity(), ContainerActivity.class);
+            Bundle args = new Bundle();
+            args.putString("action", ContainerActivity.CREATE_BUDGET);
+            i.putExtras(args);
+            startActivityForResult(i, CREATE_BUDGET);
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     private class BudgetsAdapter extends ArrayAdapter<Budget> {

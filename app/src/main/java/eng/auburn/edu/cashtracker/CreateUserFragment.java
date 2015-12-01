@@ -43,7 +43,7 @@ public class CreateUserFragment extends Fragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        mRealm = Realm.getDefaultInstance();
+        mRealm = Realm.getInstance(getActivity());
     }
 
     @Nullable

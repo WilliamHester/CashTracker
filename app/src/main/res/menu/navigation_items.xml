@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <group android:checkableBehavior="single">
+        <item android:id="@+id/accounts"
+            android:checked="false"
+            android:title="@string/accounts" />
+
+        <item android:id="@+id/budgets"
+            android:checked="false"
+            android:title="@string/budgets" />
+
+        <item android:id="@+id/goals"
+            android:checked="false"
+            android:title="@string/goals" />
+    </group>
+
+    <item android:id="@+id/drafts"
+        android:checked="false"
+        android:icon="@drawable/ic_settings"
+        android:title="@string/action_settings" />
+</menu>
