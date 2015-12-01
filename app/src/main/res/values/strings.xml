@@ -1,0 +1,32 @@
+<resources>
+    <string name="app_name">Cash Tracker</string>
+    <string name="action_settings">Settings</string>
+    <string name="error">Error</string>
+    <string name="okay">Okay</string>
+
+    <string name="accounts">Accounts</string>
+    <string name="budgets">Budgets</string>
+    <string name="goals">Goals</string>
+
+    <string name="username">Username</string>
+    <string name="password">Password</string>
+
+    <string name="login">Login</string>
+    <string name="create_account">Create Account</string>
+    <string name="invalid_credentials">Invalid Username or Password</string>
+    <string name="display_name">Display Name</string>
+    <string name="create">Create</string>
+    <string name="display_name_too_short">Display name too short</string>
+    <string name="username_too_short">Username too short</string>
+    <string name="password_too_short">Password too short</string>
+    <string name="username_already_exists">Username already exists</string>
+
+    <string name="accounts_total">Accounts Total:</string>
+    <string name="interest_rate_format">Interest Rate: %.3f%</string>
+    <string name="balance_format">Balance: %s</string>
+
+    <string name="balance">Balance</string>
+
+    <string name="goals_summary">$1%s by $2%s</string>
+    <string name="percent_of_goal">$1%.2f of goal</string>
+</resources>
