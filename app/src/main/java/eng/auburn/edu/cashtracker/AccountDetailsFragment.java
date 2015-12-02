@@ -33,7 +33,7 @@ import io.realm.Realm;
 /**
  * Created by william on 11/30/15.
  */
-public class AccountFragment extends Fragment {
+public class AccountDetailsFragment extends Fragment {
 
     private final ArrayList<Transaction> mTransactions = new ArrayList<>();
 
@@ -44,10 +44,10 @@ public class AccountFragment extends Fragment {
     @Bind(R.id.list) ListView mListView;
     @Bind(R.id.account_total) TextView mAccountTotal;
 
-    public static AccountFragment newInstance(String accountName) {
+    public static AccountDetailsFragment newInstance(String accountName) {
         Bundle args = new Bundle();
         args.putString("accountName", accountName);
-        AccountFragment fragment = new AccountFragment();
+        AccountDetailsFragment fragment = new AccountDetailsFragment();
         fragment.setArguments(args);
         return fragment;
     }
@@ -66,16 +66,15 @@ public class AccountFragment extends Fragment {
             }
         }
 
+        getActivity().setTitle(accountName);
+        setHasOptionsMenu(true);
 
-        if (getActivity() != null && getActivity().getActionBar() != null) {
-            getActivity().getActionBar().setTitle(accountName);
-            setHasOptionsMenu(true);
-        }
         if (mTransactions.size() == 0) {
             mTransactions.addAll(mAccount.getTransactions());
         }
         if (mAdapter == null) {
-            mAdapter = new TransactionAdapter(getActivity(), mTransactions);
+            mAdapter = new TransactionAdapter(getActivity(), mTransactions,
+                    getLayoutInflater(null));
         }
     }
 
@@ -92,6 +91,18 @@ public class AccountFragment extends Fragment {
         ButterKnife.bind(this, view);
 
         mListView.setAdapter(mAdapter);
+        mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Transaction t = mAdapter.getItem(position);
+                getFragmentManager().beginTransaction()
+                        .replace(R.id.container,
+                                TransactionDetailsFragment.newInstance(t.getDate()),
+                                "TransactionDetails")
+                        .addToBackStack("asdf")
+                        .commit();
+            }
+        });
         mAccountTotal.setText(Utils.getDollarString(Account.getBalance(mAccount)));
     }
 
@@ -153,6 +164,7 @@ public class AccountFragment extends Fragment {
                         });
                     }
                 });
+                d.show();
             }
 
             @Override
@@ -207,6 +219,7 @@ public class AccountFragment extends Fragment {
                 });
             }
         });
+        d.show();
     }
 
     private void showErrorDialog(int message) {
@@ -238,8 +251,7 @@ public class AccountFragment extends Fragment {
 
             SharedPreferences prefs = getActivity().getSharedPreferences("prefs",
                     Context.MODE_PRIVATE);
-            Set<String> strings = new TreeSet<>();
-            prefs.getStringSet("categories", strings);
+            Set<String> strings = prefs.getStringSet("categories", new TreeSet<String>());
             mCategories.addAll(strings);
 
             super.notifyDataSetChanged();

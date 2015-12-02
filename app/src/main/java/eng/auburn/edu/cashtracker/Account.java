@@ -56,9 +56,9 @@ public class Account extends RealmObject {
     }
 
     public static int getBalance(Account a) {
-        int balance = a.startingBalance;
-        for (Transaction t : a.transactions) {
-            balance += t.getAmount();
+        int balance = a.getStartingBalance();
+        for (Transaction t : a.getTransactions()) {
+            balance -= t.getAmount();
         }
         return balance;
     }

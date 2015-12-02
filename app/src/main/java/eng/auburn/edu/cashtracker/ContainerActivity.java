@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.view.View;
 
 public class ContainerActivity extends AppCompatActivity {
 
@@ -17,9 +18,16 @@ public class ContainerActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_container);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onBackPressed();
+            }
+        });
         setSupportActionBar(toolbar);
+        getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_arrow_back_white_24dp);
 
         if (getSupportFragmentManager().findFragmentById(R.id.container) == null) {
             String action = getIntent().getExtras().getString("action");
@@ -39,13 +47,13 @@ public class ContainerActivity extends AppCompatActivity {
                     f = CreateGoalFragment.newInstance();
                     break;
                 case VIEW_ACCOUNT:
-                    f = AccountFragment.newInstance(name);
+                    f = AccountDetailsFragment.newInstance(name);
                     break;
                 case VIEW_BUDGET:
-                    f = BudgetFragment.newInstance(name);
+                    f = BudgetDetailsFragment.newInstance(name);
                     break;
                 case VIEW_GOAL:
-                    f = GoalFragment.newInstance(name);
+                    f = GoalDetailsFragment.newInstance(name);
                     break;
             }
 

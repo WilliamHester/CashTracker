@@ -16,7 +16,7 @@ import butterknife.ButterKnife;
 /**
  * Created by william on 11/30/15.
  */
-public class BudgetFragment extends Fragment {
+public class BudgetDetailsFragment extends Fragment {
 
     private final ArrayList<Transaction> mTransactions = new ArrayList<>();
 
@@ -25,10 +25,10 @@ public class BudgetFragment extends Fragment {
 
     @Bind(R.id.list) ListView mListView;
 
-    public static BudgetFragment newInstance(String budgetName) {
+    public static BudgetDetailsFragment newInstance(String budgetName) {
         Bundle args = new Bundle();
         args.putString("budgetName", budgetName);
-        BudgetFragment fragment = new BudgetFragment();
+        BudgetDetailsFragment fragment = new BudgetDetailsFragment();
         fragment.setArguments(args);
         return fragment;
     }
@@ -45,12 +45,11 @@ public class BudgetFragment extends Fragment {
             }
         }
         findRelevantTransactions();
+        getActivity().setTitle(budgetName);
 
-        if (getActivity() != null && getActivity().getActionBar() != null) {
-            getActivity().getActionBar().setTitle(budgetName);
-        }
         if (mAdapter == null) {
-            mAdapter = new TransactionAdapter(getActivity(), mTransactions);
+            mAdapter = new TransactionAdapter(getActivity(), mTransactions,
+                    getLayoutInflater(null));
         }
     }
 

@@ -12,14 +12,14 @@ import butterknife.ButterKnife;
 /**
  * Created by william on 11/30/15.
  */
-public class GoalFragment extends Fragment {
+public class GoalDetailsFragment extends Fragment {
 
     private Goal mGoal;
 
-    public static GoalFragment newInstance(String goalName) {
+    public static GoalDetailsFragment newInstance(String goalName) {
         Bundle args = new Bundle();
         args.putString("goalName", goalName);
-        GoalFragment fragment = new GoalFragment();
+        GoalDetailsFragment fragment = new GoalDetailsFragment();
         fragment.setArguments(args);
         return fragment;
     }
@@ -37,9 +37,7 @@ public class GoalFragment extends Fragment {
             }
         }
 
-        if (getActivity() != null && getActivity().getActionBar() != null) {
-            getActivity().getActionBar().setTitle(mGoal.getName());
-        }
+        getActivity().setTitle(mGoal.getName());
     }
 
     @Nullable

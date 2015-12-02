@@ -14,8 +14,8 @@
             android:title="@string/goals" />
     </group>
 
-    <item android:id="@+id/drafts"
-        android:checked="false"
-        android:icon="@drawable/ic_settings"
-        android:title="@string/action_settings" />
+    <!--<item android:id="@+id/drafts"-->
+        <!--android:checked="false"-->
+        <!--android:icon="@drawable/ic_settings"-->
+        <!--android:title="@string/action_settings" />-->
 </menu>

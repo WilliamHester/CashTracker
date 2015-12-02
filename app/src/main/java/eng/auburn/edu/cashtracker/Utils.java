@@ -8,6 +8,6 @@ public class Utils {
     private Utils() { }
 
     public static String getDollarString(int cents) {
-        return "$" + (cents / 100) + "." + (cents % 100);
+        return String.format("$%d.%02d", cents / 100, Math.abs(cents % 100));
     }
 }

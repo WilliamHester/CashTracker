@@ -22,8 +22,12 @@
     <string name="username_already_exists">Username already exists</string>
 
     <string name="accounts_total">Accounts Total:</string>
-    <string name="interest_rate_format">Interest Rate: %.3f%</string>
+    <string name="interest_rate_format">Interest Rate: %.3f</string>
     <string name="balance_format">Balance: %s</string>
+    <string name="delete_account">Delete Account?</string>
+    <string name="delete_account_message">This will permanently delete this account and all
+    transactions and goals associated with it. Are you sure?</string>
+    <string name="confirm">Confirm</string>
 
     <string name="balance">Balance</string>
     <string name="action_create_new">Create New</string>

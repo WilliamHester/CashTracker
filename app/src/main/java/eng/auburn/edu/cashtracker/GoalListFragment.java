@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.text.format.DateUtils;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -23,18 +24,18 @@ import butterknife.ButterKnife;
 /**
  * Created by william on 11/30/15.
  */
-public class BudgetsFragment extends Fragment {
+public class GoalListFragment extends Fragment {
 
-    private static final int CREATE_BUDGET = 11;
+    private static final int CREATE_GOAL = 12;
 
-    private final ArrayList<Budget> mBudgets = new ArrayList<>();
-    private BudgetsAdapter mBudgetsAdapter;
+    private final ArrayList<Goal> mGoals = new ArrayList<>();
+    private GoalAdapter mAdapter;
 
     @Bind(R.id.list) ListView mListView;
 
-    public static BudgetsFragment newInstance() {
+    public static GoalListFragment newInstance() {
         Bundle args = new Bundle();
-        BudgetsFragment fragment = new BudgetsFragment();
+        GoalListFragment fragment = new GoalListFragment();
         fragment.setArguments(args);
         return fragment;
     }
@@ -43,15 +44,13 @@ public class BudgetsFragment extends Fragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        if (getActivity() != null && getActivity().getActionBar() != null) {
-            getActivity().getActionBar().setTitle(R.string.budgets);
-            setHasOptionsMenu(true);
+        getActivity().setTitle(R.string.goals);
+        setHasOptionsMenu(true);
+        if (mGoals.size() == 0) {
+            mGoals.addAll(UserManager.getInstance().getUser().getGoals());
         }
-        if (mBudgets.size() == 0) {
-            mBudgets.addAll(UserManager.getInstance().getUser().getBudgets());
-        }
-        if (mBudgetsAdapter == null) {
-            mBudgetsAdapter = new BudgetsAdapter();
+        if (mAdapter == null) {
+            mAdapter = new GoalAdapter();
         }
     }
 
@@ -59,7 +58,7 @@ public class BudgetsFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_budgets, container, false);
+        return inflater.inflate(R.layout.fragment_goals, container, false);
     }
 
     @Override
@@ -67,7 +66,7 @@ public class BudgetsFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         ButterKnife.bind(this, view);
 
-        mListView.setAdapter(mBudgetsAdapter);
+        mListView.setAdapter(mAdapter);
     }
 
     @Override
@@ -78,12 +77,12 @@ public class BudgetsFragment extends Fragment {
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode == CREATE_BUDGET) {
+        if (requestCode == CREATE_GOAL) {
             if (resultCode == Activity.RESULT_OK) {
                 User u = UserManager.getInstance().getUser();
-                mBudgets.clear();
-                mBudgets.addAll(u.getBudgets());
-                mBudgetsAdapter.notifyDataSetChanged();
+                mGoals.clear();
+                mGoals.addAll(u.getGoals());
+                mAdapter.notifyDataSetChanged();
             }
             return;
         }
@@ -102,32 +101,42 @@ public class BudgetsFragment extends Fragment {
         if (item.getItemId() == R.id.action_create_new) {
             Intent i = new Intent(getActivity(), ContainerActivity.class);
             Bundle args = new Bundle();
-            args.putString("action", ContainerActivity.CREATE_BUDGET);
+            args.putString("action", ContainerActivity.CREATE_GOAL);
             i.putExtras(args);
-            startActivityForResult(i, CREATE_BUDGET);
+            startActivityForResult(i, CREATE_GOAL);
             return true;
         }
         return super.onOptionsItemSelected(item);
     }
 
-    private class BudgetsAdapter extends ArrayAdapter<Budget> {
-
-        public BudgetsAdapter() {
-            super(getActivity(), R.layout.list_item_account, mBudgets);
+    private class GoalAdapter extends ArrayAdapter<Goal> {
+        public GoalAdapter() {
+            super(getActivity(), R.layout.list_item_goal, mGoals);
         }
 
         @Override
         public View getView(int position, View convertView, ViewGroup parent) {
-            View v = super.getView(position, convertView, parent);
-            TextView title = (TextView) v.findViewById(R.id.title);
-            TextView category = (TextView) v.findViewById(R.id.category);
-            TextView value = (TextView) v.findViewById(R.id.value);
+            if (convertView == null) {
+                convertView = getLayoutInflater(null).inflate(R.layout.list_item_goal, parent,
+                        false);
+            }
+            TextView title = (TextView) convertView.findViewById(R.id.title);
+            TextView goalSummary = (TextView) convertView.findViewById(R.id.goal_summary);
+            TextView accountName = (TextView) convertView.findViewById(R.id.account_name);
+            TextView value = (TextView) convertView.findViewById(R.id.value);
 
-            Budget b = getItem(position);
-            title.setText(b.getName());
-            category.setText(b.getCategory());
-            value.setText(Utils.getDollarString(b.getGoal()));
-            return v;
+            Goal g = getItem(position);
+            title.setText(g.getName());
+            goalSummary.setText(String.format(getResources().getString(R.string.goals_summary),
+                    Utils.getDollarString(g.getAmount()),
+                    DateUtils.formatDateTime(getActivity(), g.getEndDate(),
+                            DateUtils.FORMAT_NUMERIC_DATE)));
+            accountName.setText(g.getAccount().getName());
+            int accountTotal = Account.getBalance(g.getAccount());
+            value.setText(String.format(getResources().getString(R.string.percent_of_goal),
+                    accountTotal / (double) g.getAmount()));
+
+            return convertView;
         }
     }
 }

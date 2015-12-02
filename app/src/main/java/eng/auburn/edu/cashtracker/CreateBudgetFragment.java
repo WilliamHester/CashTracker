@@ -106,9 +106,9 @@ public class CreateBudgetFragment extends Fragment {
             super(getActivity(), android.R.layout.simple_spinner_dropdown_item, android.R.id.text1);
             SharedPreferences prefs = getActivity().getSharedPreferences("prefs",
                     Context.MODE_PRIVATE);
-            Set<String> strings = new TreeSet<>();
-            prefs.getStringSet("categories", strings);
+            Set<String> strings = prefs.getStringSet("categories", new TreeSet<String>());
             addAll(strings);
+            add("Uncategorized");
         }
     }
 }
