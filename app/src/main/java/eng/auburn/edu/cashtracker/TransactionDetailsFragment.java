@@ -5,6 +5,9 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.text.format.DateUtils;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
@@ -24,9 +27,10 @@ public class TransactionDetailsFragment extends Fragment {
     @Bind(R.id.date) TextView mDate;
     @Bind(R.id.category) TextView mCategory;
 
-    public static TransactionDetailsFragment newInstance(long timeStamp) {
+    public static TransactionDetailsFragment newInstance(String accountName, long timeStamp) {
         Bundle args = new Bundle();
         args.putLong("timeStamp", timeStamp);
+        args.putString("accountName", accountName);
         TransactionDetailsFragment fragment = new TransactionDetailsFragment();
         fragment.setArguments(args);
         return fragment;
@@ -40,6 +44,8 @@ public class TransactionDetailsFragment extends Fragment {
         mTransaction = realm.where(Transaction.class)
                 .equalTo("date", getArguments().getLong("timeStamp"))
                 .findFirst();
+
+        setHasOptionsMenu(true);
     }
 
     @Nullable
@@ -53,11 +59,38 @@ public class TransactionDetailsFragment extends Fragment {
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         ButterKnife.bind(this, view);
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
 
         mAmount.setText(Utils.getDollarString(mTransaction.getAmount()));
         mDate.setText(DateUtils.formatDateTime(getActivity(), mTransaction.getDate(),
                 DateUtils.FORMAT_NUMERIC_DATE));
         mCategory.setText(mTransaction.getCategory());
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        super.onCreateOptionsMenu(menu, inflater);
+
+        inflater.inflate(R.menu.menu_edit, menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == R.id.action_edit) {
+            getFragmentManager().beginTransaction()
+                    .replace(R.id.container,
+                            CreateTransactionFragment
+                                    .newInstance(getArguments().getString("accountName"),
+                                            mTransaction.getDate()))
+                    .addToBackStack("CreateTransactionFragment")
+                    .commit();
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     @Override

@@ -2,7 +2,7 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <group android:checkableBehavior="single">
         <item android:id="@+id/accounts"
-            android:checked="false"
+            android:checked="true"
             android:title="@string/accounts" />
 
         <item android:id="@+id/budgets"
@@ -12,10 +12,10 @@
         <item android:id="@+id/goals"
             android:checked="false"
             android:title="@string/goals" />
+
+        <item android:id="@+id/action_settings"
+            android:checked="false"
+            android:title="@string/action_settings" />
     </group>
 
-    <!--<item android:id="@+id/drafts"-->
-        <!--android:checked="false"-->
-        <!--android:icon="@drawable/ic_settings"-->
-        <!--android:title="@string/action_settings" />-->
 </menu>

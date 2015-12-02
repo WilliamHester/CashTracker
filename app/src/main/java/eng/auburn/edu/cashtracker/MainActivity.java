@@ -1,5 +1,6 @@
 package eng.auburn.edu.cashtracker;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
@@ -19,6 +20,8 @@ public class MainActivity extends AppCompatActivity {
     private static final String ACCOUNTS_FRAGMENT = "accounts";
     private static final String BUDGETS_FRAGMENT = "budgets";
     private static final String GOALS_FRAGMENT = "goals";
+
+    private static final int REQUEST_DELETE_USER = 13;
 
     private DrawerLayout mDrawerLayout;
 
@@ -93,7 +96,12 @@ public class MainActivity extends AppCompatActivity {
                         }
                         break;
                     case R.id.action_settings:
-                        break;
+                        Intent i = new Intent(MainActivity.this, ContainerActivity.class);
+                        Bundle args = new Bundle();
+                        args.putString("action", ContainerActivity.SETTINGS);
+                        i.putExtras(args);
+                        startActivityForResult(i, REQUEST_DELETE_USER);
+                        return false;
                 }
                 fm.beginTransaction()
                         .replace(R.id.container, f, tag)
@@ -105,4 +113,12 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == REQUEST_DELETE_USER && resultCode == RESULT_OK) {
+            finish();
+            return;
+        }
+        super.onActivityResult(requestCode, resultCode, data);
+    }
 }

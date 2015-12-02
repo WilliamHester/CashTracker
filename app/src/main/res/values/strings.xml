@@ -73,4 +73,15 @@
     <string name="goal_already_exists">Goal already exists.</string>
     <string name="goal_account">Goal Account</string>
 
+    <string name="action_edit">Edit</string>
+    <string name="transfer">Transfer</string>
+    <string name="transfer_money_to">Transfer money to…</string>
+    <string name="positive">Add</string>
+    <string name="negative">Spend</string>
+
+    <string name="delete_user">Delete Current User</string>
+    <string name="change_display_name">Change Display Name</string>
+    <string name="delete_user_message">Are you sure? This will delete your user and all associated
+        accounts.</string>
+
 </resources>

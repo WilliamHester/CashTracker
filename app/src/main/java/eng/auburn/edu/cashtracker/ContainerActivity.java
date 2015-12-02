@@ -14,6 +14,7 @@ public class ContainerActivity extends AppCompatActivity {
     public static final String VIEW_ACCOUNT = "viewAccount";
     public static final String VIEW_BUDGET = "viewBudget";
     public static final String VIEW_GOAL = "viewGoal";
+    public static final String SETTINGS = "settings";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,6 +55,9 @@ public class ContainerActivity extends AppCompatActivity {
                     break;
                 case VIEW_GOAL:
                     f = GoalDetailsFragment.newInstance(name);
+                    break;
+                case SETTINGS:
+                    f = SettingsFragment.newInstance();
                     break;
             }
 
