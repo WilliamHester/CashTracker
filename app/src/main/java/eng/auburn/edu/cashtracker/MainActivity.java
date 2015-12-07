@@ -10,7 +10,6 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
-import android.view.View;
 
 /**
  * Created by william on 12/1/15.
@@ -30,16 +29,6 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (mDrawerLayout.isDrawerOpen(GravityCompat.START)) {
-                    mDrawerLayout.openDrawer(GravityCompat.START);
-                } else {
-                    mDrawerLayout.closeDrawers();
-                }
-            }
-        });
         setSupportActionBar(toolbar);
         getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_menu_white_24dp);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -121,4 +110,18 @@ public class MainActivity extends AppCompatActivity {
         }
         super.onActivityResult(requestCode, resultCode, data);
     }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == android.R.id.home) {
+            if (!mDrawerLayout.isDrawerOpen(GravityCompat.START)) {
+                mDrawerLayout.openDrawer(GravityCompat.START);
+            } else {
+                mDrawerLayout.closeDrawers();
+            }
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
 }

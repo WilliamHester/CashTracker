@@ -3,10 +3,13 @@ package eng.auburn.edu.cashtracker;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.text.format.DateUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
+import butterknife.Bind;
 import butterknife.ButterKnife;
 
 /**
@@ -15,6 +18,10 @@ import butterknife.ButterKnife;
 public class GoalDetailsFragment extends Fragment {
 
     private Goal mGoal;
+
+    @Bind(R.id.title) TextView mTitle;
+    @Bind(R.id.value) TextView mValue;
+    @Bind(R.id.percent) TextView mPercent;
 
     public static GoalDetailsFragment newInstance(String goalName) {
         Bundle args = new Bundle();
@@ -51,6 +58,13 @@ public class GoalDetailsFragment extends Fragment {
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         ButterKnife.bind(this, view);
+
+        mTitle.setText(mGoal.getName());
+        mValue.setText(Utils.getDollarString(mGoal.getAmount()));
+        mPercent.setText(String.format(getResources().getString(R.string.goals_summary),
+                Utils.getDollarString(mGoal.getAmount()),
+                DateUtils.formatDateTime(getActivity(), mGoal.getEndDate(),
+                        DateUtils.FORMAT_NUMERIC_DATE)));
     }
 
     @Override

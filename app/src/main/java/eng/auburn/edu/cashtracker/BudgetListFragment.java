@@ -11,6 +11,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -67,6 +68,17 @@ public class BudgetListFragment extends Fragment {
         ButterKnife.bind(this, view);
 
         mListView.setAdapter(mBudgetsAdapter);
+        mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Intent i = new Intent(getActivity(), ContainerActivity.class);
+                Bundle args = new Bundle();
+                args.putString("action", ContainerActivity.VIEW_BUDGET);
+                args.putString("name", mBudgetsAdapter.getItem(position).getName());
+                i.putExtras(args);
+                startActivity(i);
+            }
+        });
     }
 
     @Override
